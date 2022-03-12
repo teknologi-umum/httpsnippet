@@ -11,7 +11,7 @@
 'use strict'
 
 const helpers = require('./helpers')
-const CodeBuilder = require('../../helpers/code-builder')
+const CodeBuilder = require('../../helpers/code-builder').default
 
 module.exports = function (source, options) {
   const opts = Object.assign({

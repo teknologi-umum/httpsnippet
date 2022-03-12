@@ -10,7 +10,7 @@
 
 'use strict'
 
-const CodeBuilder = require('../../helpers/code-builder')
+const CodeBuilder = require('../../helpers/code-builder').default
 const helpers = require('../../helpers/headers')
 
 module.exports = function (source, options) {

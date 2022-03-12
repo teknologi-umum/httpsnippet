@@ -1,8 +1,6 @@
-'use strict'
+import CodeBuilder from '../../helpers/code-builder'
 
-const CodeBuilder = require('../../helpers/code-builder')
-
-module.exports = function (source, options) {
+module.exports = function (source, _options) {
   const code = new CodeBuilder()
 
   code.push('CURL *hnd = curl_easy_init();')

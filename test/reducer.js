@@ -1,8 +1,7 @@
 'use strict'
 
-const reducer = require('../src/helpers/reducer')
-
-require('should')
+import reducer from '../src/helpers/reducer'
+import 'should'
 
 describe('Reducer', function () {
   it('should convert array object pair to key-value object', function (done) {
