@@ -1,11 +1,21 @@
 {
   "version": "2.0.0",
-  "name": "httpsnippet",
+  "name": "@teknologi-umum/httpsnippet",
   "description": "HTTP Request snippet generator for *most* languages",
   "author": "Ahmad Nassri <ahmad@mashape.com> (https://www.mashape.com/)",
-  "homepage": "https://github.com/Mashape/httpsnippet",
+  "contributors": [
+    {
+      "name": "elianiva",
+      "url": "https://github.com/elianiva"
+    },
+    {
+      "name": "aldy505",
+      "url": "https://github.com/aldy505"
+    }
+  ],
+  "homepage": "https://github.com/teknologi-umum/httpsnippet",
   "license": "MIT",
-  "main": "src/index.js",
+  "main": "dist/index.js",
   "bin": "bin/httpsnippet",
   "keywords": [
     "api",
@@ -44,9 +54,12 @@
     "bin",
     "src"
   ],
-  "repository": "Mashape/httpsnippet",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/teknologi-umum/httpsnippet.git"
+  },
   "bugs": {
-    "url": "https://github.com/Mashape/httpsnippet/issues"
+    "url": "https://github.com/teknologi-umum/httpsnippet/issues"
   },
   "scripts": {
     "quick": "mocha --no-timeouts --fgrep 'Request Validation' --invert",
