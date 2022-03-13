@@ -1,12 +1,12 @@
-'use strict'
+"use strict";
 
 module.exports = {
   info: {
-    key: 'r',
-    title: 'R',
-    extname: '.r',
-    default: 'httr'
+    key: "r",
+    title: "R",
+    extname: ".r",
+    default: "httr"
   },
 
-  httr: require('./httr')
-}
+  httr: require("./httr")
+};

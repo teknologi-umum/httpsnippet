@@ -1,14 +1,14 @@
-var axios = require("axios").default;
+const axios = require("axios").default;
 
-var options = {
-  method: 'POST',
-  url: 'http://mockbin.com/har',
-  headers: {'content-type': 'application/json'},
-  data: {foo: 'bar'}
+const options = {
+  method: "POST",
+  url: "http://mockbin.com/har",
+  headers: {"content-type": "application/json"},
+  data: {foo: "bar"}
 };
 
-axios.request(options).then(function (response) {
+axios.request(options).then(function(response) {
   console.log(response.data);
-}).catch(function (error) {
+}).catch(function(error) {
   console.error(error);
 });

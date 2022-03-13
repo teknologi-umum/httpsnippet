@@ -1,4 +1,4 @@
-import util from 'util'
+import util from "util";
 
 /**
  * Helper object to format and aggragate lines of code.
@@ -14,10 +14,10 @@ export default class CodeBuilder {
 
   constructor(private _indentation: string, private _lineJoin = "\n") {
     if (typeof _indentation !== "string") {
-      this._indentation = ""
+      this._indentation = "";
     }
 
-    this._code = []
+    this._code = [];
   }
 
   /**
@@ -44,9 +44,9 @@ export default class CodeBuilder {
     line: string | null,
     ...args: any[]
   ): string | null {
-    if (line === null) return null
-    let lineIndentation = this._indentation.repeat(indentLevel)
-    return util.format(lineIndentation + line, ...args)
+    if (line === null) return null;
+    const lineIndentation = this._indentation.repeat(indentLevel);
+    return util.format(lineIndentation + line, ...args);
   }
 
   /**
@@ -66,7 +66,7 @@ export default class CodeBuilder {
   unshift(indentationLevel: number, line: string, ...args: any[]): this;
   unshift(indentLevelOrLine: any, lineOrArgs?: any, ...args: any[]): this {
     if (indentLevelOrLine === null) {
-      this._code.unshift(this.buildLine(0, null))
+      this._code.unshift(this.buildLine(0, null));
     }
 
     if (typeof indentLevelOrLine === "number") {
@@ -74,15 +74,15 @@ export default class CodeBuilder {
     }
 
     if (typeof indentLevelOrLine === "string") {
-      let data = args || [];
+      const data = args || [];
       if (typeof lineOrArgs !== "undefined") {
-        data.unshift(lineOrArgs)
+        data.unshift(lineOrArgs);
       }
 
-      this._code.unshift(this.buildLine(0, indentLevelOrLine, ...data))
+      this._code.unshift(this.buildLine(0, indentLevelOrLine, ...data));
     }
 
-    return this
+    return this;
   }
 
   /**
@@ -102,7 +102,7 @@ export default class CodeBuilder {
   push(indentationLevel: number, line: string, ...args: any[]): this;
   push(indentLevelOrLine: any, lineOrArgs?: any, ...args: any[]): this {
     if (indentLevelOrLine === null) {
-      this._code.push(this.buildLine(0, null))
+      this._code.push(this.buildLine(0, null));
     }
 
     if (typeof indentLevelOrLine === "number") {
@@ -110,32 +110,32 @@ export default class CodeBuilder {
     }
 
     if (typeof indentLevelOrLine === "string") {
-      let data = args || [];
+      const data = args || [];
       if (typeof lineOrArgs !== "undefined") {
-        data.unshift(lineOrArgs)
+        data.unshift(lineOrArgs);
       }
 
-      this._code.push(this.buildLine(0, indentLevelOrLine, ...data))
+      this._code.push(this.buildLine(0, indentLevelOrLine, ...data));
     }
 
     // @ts-ignore
     // this._code.push(this.buildLine(...arguments))
 
-    return this
+    return this;
   }
 
   /**
    * Add an empty line at the end of current lines
    */
   blank(): this {
-    this._code.push(null)
-    return this
+    this._code.push(null);
+    return this;
   }
 
   /**
    * Concatenate all current lines using the given lineJoin
    */
   join(): string {
-    return this._code.join(this._lineJoin)
+    return this._code.join(this._lineJoin);
   }
 }

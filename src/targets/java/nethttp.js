@@ -8,56 +8,56 @@
  * for any questions or issues regarding the generated code snippet, please open an issue mentioning the author.
  */
 
-'use strict'
+"use strict";
 
-const CodeBuilder = require('../../helpers/code-builder').default
+const CodeBuilder = require("../../helpers/code-builder").default;
 
-module.exports = function (source, options) {
+module.exports = function(source, options) {
   const opts = Object.assign(
     {
-      indent: '  '
+      indent: "  "
     },
     options
-  )
+  );
 
-  const code = new CodeBuilder(opts.indent)
+  const code = new CodeBuilder(opts.indent);
 
-  code.push('HttpRequest request = HttpRequest.newBuilder()')
-  code.push(2, '.uri(URI.create("%s"))', source.fullUrl)
+  code.push("HttpRequest request = HttpRequest.newBuilder()");
+  code.push(2, ".uri(URI.create(\"%s\"))", source.fullUrl);
 
-  const headers = Object.keys(source.allHeaders)
+  const headers = Object.keys(source.allHeaders);
 
   // construct headers
   if (headers.length) {
-    headers.forEach(function (key) {
-      code.push(2, '.header("%s", "%s")', key, source.allHeaders[key])
-    })
+    headers.forEach(function(key) {
+      code.push(2, ".header(\"%s\", \"%s\")", key, source.allHeaders[key]);
+    });
   }
 
   if (source.postData.text) {
     code.push(
       2,
-      '.method("%s", HttpRequest.BodyPublishers.ofString(%s))',
+      ".method(\"%s\", HttpRequest.BodyPublishers.ofString(%s))",
       source.method.toUpperCase(),
       JSON.stringify(source.postData.text)
-    )
+    );
   } else {
-    code.push(2, '.method("%s", HttpRequest.BodyPublishers.noBody())', source.method.toUpperCase())
+    code.push(2, ".method(\"%s\", HttpRequest.BodyPublishers.noBody())", source.method.toUpperCase());
   }
 
-  code.push(2, '.build();')
+  code.push(2, ".build();");
 
   code.push(
-    'HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());'
-  )
-  code.push('System.out.println(response.body());')
+    "HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());"
+  );
+  code.push("System.out.println(response.body());");
 
-  return code.join()
-}
+  return code.join();
+};
 
 module.exports.info = {
-  key: 'nethttp',
-  title: 'java.net.http',
-  link: 'https://openjdk.java.net/groups/net/httpclient/intro.html',
-  description: 'Java Standardized HTTP Client API'
-}
+  key: "nethttp",
+  title: "java.net.http",
+  link: "https://openjdk.java.net/groups/net/httpclient/intro.html",
+  description: "Java Standardized HTTP Client API"
+};

@@ -1,14 +1,14 @@
 const options = {
-  method: 'POST',
+  method: "POST",
   headers: {
-    cookie: 'foo=bar; bar=baz',
-    accept: 'application/json',
-    'content-type': 'application/x-www-form-urlencoded'
+    cookie: "foo=bar; bar=baz",
+    accept: "application/json",
+    "content-type": "application/x-www-form-urlencoded"
   },
-  body: new URLSearchParams({foo: 'bar'})
+  body: new URLSearchParams({foo: "bar"})
 };
 
-fetch('http://mockbin.com/har?foo=bar&foo=baz&baz=abc&key=value', options)
+fetch("http://mockbin.com/har?foo=bar&foo=baz&baz=abc&key=value", options)
   .then(response => response.json())
   .then(response => console.log(response))
   .catch(err => console.error(err));

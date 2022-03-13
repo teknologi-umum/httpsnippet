@@ -10,6 +10,6 @@ const settings = {
   "data": "{\"foo\":null}"
 };
 
-$.ajax(settings).done(function (response) {
+$.ajax(settings).done(function(response) {
   console.log(response);
 });

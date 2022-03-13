@@ -8,131 +8,131 @@
  * for any questions or issues regarding the generated code snippet, please open an issue mentioning the author.
  */
 
-'use strict'
+"use strict";
 
-const util = require('util')
-const CodeBuilder = require('../../helpers/code-builder').default
+const util = require("util");
+const CodeBuilder = require("../../helpers/code-builder").default;
 
-module.exports = function (source, options) {
+module.exports = function(source, options) {
   const opts = Object.assign({
     closingTag: false,
-    indent: '  ',
+    indent: "  ",
     maxRedirects: 10,
     namedErrors: false,
     noTags: false,
     shortTags: false,
     timeout: 30
-  }, options)
+  }, options);
 
-  const code = new CodeBuilder(opts.indent)
+  const code = new CodeBuilder(opts.indent);
 
   if (!opts.noTags) {
-    code.push(opts.shortTags ? '<?' : '<?php')
-      .blank()
+    code.push(opts.shortTags ? "<?" : "<?php")
+      .blank();
   }
 
-  code.push('$curl = curl_init();')
-    .blank()
+  code.push("$curl = curl_init();")
+    .blank();
 
   const curlOptions = [{
     escape: true,
-    name: 'CURLOPT_PORT',
+    name: "CURLOPT_PORT",
     value: source.uriObj.port
   }, {
     escape: true,
-    name: 'CURLOPT_URL',
+    name: "CURLOPT_URL",
     value: source.fullUrl
   }, {
     escape: false,
-    name: 'CURLOPT_RETURNTRANSFER',
-    value: 'true'
+    name: "CURLOPT_RETURNTRANSFER",
+    value: "true"
   }, {
     escape: true,
-    name: 'CURLOPT_ENCODING',
-    value: ''
+    name: "CURLOPT_ENCODING",
+    value: ""
   }, {
     escape: false,
-    name: 'CURLOPT_MAXREDIRS',
+    name: "CURLOPT_MAXREDIRS",
     value: opts.maxRedirects
   }, {
     escape: false,
-    name: 'CURLOPT_TIMEOUT',
+    name: "CURLOPT_TIMEOUT",
     value: opts.timeout
   }, {
     escape: false,
-    name: 'CURLOPT_HTTP_VERSION',
-    value: source.httpVersion === 'HTTP/1.0' ? 'CURL_HTTP_VERSION_1_0' : 'CURL_HTTP_VERSION_1_1'
+    name: "CURLOPT_HTTP_VERSION",
+    value: source.httpVersion === "HTTP/1.0" ? "CURL_HTTP_VERSION_1_0" : "CURL_HTTP_VERSION_1_1"
   }, {
     escape: true,
-    name: 'CURLOPT_CUSTOMREQUEST',
+    name: "CURLOPT_CUSTOMREQUEST",
     value: source.method
   }, {
     escape: true,
-    name: 'CURLOPT_POSTFIELDS',
+    name: "CURLOPT_POSTFIELDS",
     value: source.postData ? source.postData.text : undefined
-  }]
+  }];
 
-  code.push('curl_setopt_array($curl, [')
+  code.push("curl_setopt_array($curl, [");
 
-  const curlopts = new CodeBuilder(opts.indent, '\n' + opts.indent)
+  const curlopts = new CodeBuilder(opts.indent, "\n" + opts.indent);
 
-  curlOptions.forEach(function (option) {
+  curlOptions.forEach(function(option) {
     if (!~[null, undefined].indexOf(option.value)) {
-      curlopts.push(util.format('%s => %s,', option.name, option.escape ? JSON.stringify(option.value) : option.value))
+      curlopts.push(util.format("%s => %s,", option.name, option.escape ? JSON.stringify(option.value) : option.value));
     }
-  })
+  });
 
   // construct cookies
-  const cookies = source.cookies.map(function (cookie) {
-    return encodeURIComponent(cookie.name) + '=' + encodeURIComponent(cookie.value)
-  })
+  const cookies = source.cookies.map(function(cookie) {
+    return encodeURIComponent(cookie.name) + "=" + encodeURIComponent(cookie.value);
+  });
 
   if (cookies.length) {
-    curlopts.push(util.format('CURLOPT_COOKIE => "%s",', cookies.join('; ')))
+    curlopts.push(util.format("CURLOPT_COOKIE => \"%s\",", cookies.join("; ")));
   }
 
   // construct cookies
-  const headers = Object.keys(source.headersObj).sort().map(function (key) {
-    return util.format('"%s: %s"', key, source.headersObj[key])
-  })
+  const headers = Object.keys(source.headersObj).sort().map(function(key) {
+    return util.format("\"%s: %s\"", key, source.headersObj[key]);
+  });
 
   if (headers.length) {
-    curlopts.push('CURLOPT_HTTPHEADER => [')
-      .push(1, headers.join(',\n' + opts.indent + opts.indent))
-      .push('],')
+    curlopts.push("CURLOPT_HTTPHEADER => [")
+      .push(1, headers.join(",\n" + opts.indent + opts.indent))
+      .push("],");
   }
 
   code.push(1, curlopts.join())
-    .push(']);')
+    .push("]);")
     .blank()
-    .push('$response = curl_exec($curl);')
-    .push('$err = curl_error($curl);')
+    .push("$response = curl_exec($curl);")
+    .push("$err = curl_error($curl);")
     .blank()
-    .push('curl_close($curl);')
+    .push("curl_close($curl);")
     .blank()
-    .push('if ($err) {')
+    .push("if ($err) {");
 
   if (opts.namedErrors) {
-    code.push(1, 'echo array_flip(get_defined_constants(true)["curl"])[$err];')
+    code.push(1, "echo array_flip(get_defined_constants(true)[\"curl\"])[$err];");
   } else {
-    code.push(1, 'echo "cURL Error #:" . $err;')
+    code.push(1, "echo \"cURL Error #:\" . $err;");
   }
 
-  code.push('} else {')
-    .push(1, 'echo $response;')
-    .push('}')
+  code.push("} else {")
+    .push(1, "echo $response;")
+    .push("}");
 
   if (!opts.noTags && opts.closingTag) {
     code.blank()
-      .push('?>')
+      .push("?>");
   }
 
-  return code.join()
-}
+  return code.join();
+};
 
 module.exports.info = {
-  key: 'curl',
-  title: 'cURL',
-  link: 'http://php.net/manual/en/book.curl.php',
-  description: 'PHP with ext-curl'
-}
+  key: "curl",
+  title: "cURL",
+  link: "http://php.net/manual/en/book.curl.php",
+  description: "PHP with ext-curl"
+};

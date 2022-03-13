@@ -8,71 +8,71 @@
  * for any questions or issues regarding the generated code snippet, please open an issue mentioning the author.
  */
 
-'use strict'
+"use strict";
 
-const CodeBuilder = require('../../helpers/code-builder').default
+const CodeBuilder = require("../../helpers/code-builder").default;
 
-module.exports = function (source, options) {
+module.exports = function(source, options) {
   const opts = Object.assign({
-    indent: '  '
-  }, options)
+    indent: "  "
+  }, options);
 
-  const code = new CodeBuilder(opts.indent)
+  const code = new CodeBuilder(opts.indent);
 
-  const methods = ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD']
+  const methods = ["GET", "POST", "PUT", "DELETE", "PATCH", "HEAD"];
 
-  const methodsWithBody = ['POST', 'PUT', 'DELETE', 'PATCH']
+  const methodsWithBody = ["POST", "PUT", "DELETE", "PATCH"];
 
-  code.push('OkHttpClient client = new OkHttpClient();')
-    .blank()
+  code.push("OkHttpClient client = new OkHttpClient();")
+    .blank();
 
   if (source.postData.text) {
     if (source.postData.boundary) {
-      code.push('MediaType mediaType = MediaType.parse("%s; boundary=%s");', source.postData.mimeType, source.postData.boundary)
+      code.push("MediaType mediaType = MediaType.parse(\"%s; boundary=%s\");", source.postData.mimeType, source.postData.boundary);
     } else {
-      code.push('MediaType mediaType = MediaType.parse("%s");', source.postData.mimeType)
+      code.push("MediaType mediaType = MediaType.parse(\"%s\");", source.postData.mimeType);
     }
-    code.push('RequestBody body = RequestBody.create(mediaType, %s);', JSON.stringify(source.postData.text))
+    code.push("RequestBody body = RequestBody.create(mediaType, %s);", JSON.stringify(source.postData.text));
   }
 
-  code.push('Request request = new Request.Builder()')
-  code.push(1, '.url("%s")', source.fullUrl)
+  code.push("Request request = new Request.Builder()");
+  code.push(1, ".url(\"%s\")", source.fullUrl);
   if (methods.indexOf(source.method.toUpperCase()) === -1) {
     if (source.postData.text) {
-      code.push(1, '.method("%s", body)', source.method.toUpperCase())
+      code.push(1, ".method(\"%s\", body)", source.method.toUpperCase());
     } else {
-      code.push(1, '.method("%s", null)', source.method.toUpperCase())
+      code.push(1, ".method(\"%s\", null)", source.method.toUpperCase());
     }
   } else if (methodsWithBody.indexOf(source.method.toUpperCase()) >= 0) {
     if (source.postData.text) {
-      code.push(1, '.%s(body)', source.method.toLowerCase())
+      code.push(1, ".%s(body)", source.method.toLowerCase());
     } else {
-      code.push(1, '.%s(null)', source.method.toLowerCase())
+      code.push(1, ".%s(null)", source.method.toLowerCase());
     }
   } else {
-    code.push(1, '.%s()', source.method.toLowerCase())
+    code.push(1, ".%s()", source.method.toLowerCase());
   }
 
   // Add headers, including the cookies
-  const headers = Object.keys(source.allHeaders)
+  const headers = Object.keys(source.allHeaders);
 
   // construct headers
   if (headers.length) {
-    headers.forEach(function (key) {
-      code.push(1, '.addHeader("%s", "%s")', key, source.allHeaders[key])
-    })
+    headers.forEach(function(key) {
+      code.push(1, ".addHeader(\"%s\", \"%s\")", key, source.allHeaders[key]);
+    });
   }
 
-  code.push(1, '.build();')
+  code.push(1, ".build();")
     .blank()
-    .push('Response response = client.newCall(request).execute();')
+    .push("Response response = client.newCall(request).execute();");
 
-  return code.join()
-}
+  return code.join();
+};
 
 module.exports.info = {
-  key: 'okhttp',
-  title: 'OkHttp',
-  link: 'http://square.github.io/okhttp/',
-  description: 'An HTTP Request Client Library'
-}
+  key: "okhttp",
+  title: "OkHttp",
+  link: "http://square.github.io/okhttp/",
+  description: "An HTTP Request Client Library"
+};

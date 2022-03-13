@@ -26,26 +26,26 @@
  * Extracted from https://github.com/node-fetch/node-fetch/blob/64c5c296a0250b852010746c76144cb9e14698d9/src/utils/form-data.js
  */
 
-const carriage = '\r\n'
-const dashes = '-'.repeat(2)
+const carriage = "\r\n";
+const dashes = "-".repeat(2);
 
-const NAME = Symbol.toStringTag
+const NAME = Symbol.toStringTag;
 
 const isBlob = object => {
   return (
-    typeof object === 'object' &&
-    typeof object.arrayBuffer === 'function' &&
-    typeof object.type === 'string' &&
-    typeof object.stream === 'function' &&
-    typeof object.constructor === 'function' &&
+    typeof object === "object" &&
+    typeof object.arrayBuffer === "function" &&
+    typeof object.type === "string" &&
+    typeof object.stream === "function" &&
+    typeof object.constructor === "function" &&
     /^(Blob|File)$/.test(object[NAME])
-  )
-}
+  );
+};
 
 /**
  * @param {string} boundary
  */
-const getFooter = boundary => `${dashes}${boundary}${dashes}${carriage.repeat(2)}`
+const getFooter = boundary => `${dashes}${boundary}${dashes}${carriage.repeat(2)}`;
 
 /**
  * @param {string} boundary
@@ -54,18 +54,18 @@ const getFooter = boundary => `${dashes}${boundary}${dashes}${carriage.repeat(2)
  *
  * @return {string}
  */
-function getHeader (boundary, name, field) {
-  let header = ''
+function getHeader(boundary, name, field) {
+  let header = "";
 
-  header += `${dashes}${boundary}${carriage}`
-  header += `Content-Disposition: form-data; name="${name}"`
+  header += `${dashes}${boundary}${carriage}`;
+  header += `Content-Disposition: form-data; name="${name}"`;
 
   if (isBlob(field)) {
-    header += `; filename="${field.name}"${carriage}`
-    header += `Content-Type: ${field.type || 'application/octet-stream'}`
+    header += `; filename="${field.name}"${carriage}`;
+    header += `Content-Type: ${field.type || "application/octet-stream"}`;
   }
 
-  return `${header}${carriage.repeat(2)}`
+  return `${header}${carriage.repeat(2)}`;
 }
 
 /**
@@ -74,13 +74,13 @@ function getHeader (boundary, name, field) {
 module.exports.getBoundary = () => {
   // This generates a 50 character boundary similar to those used by Firefox.
   // They are optimized for boyer-moore parsing.
-  let boundary = '--------------------------'
+  let boundary = "--------------------------";
   for (let i = 0; i < 24; i++) {
-    boundary += Math.floor(Math.random() * 10).toString(16)
+    boundary += Math.floor(Math.random() * 10).toString(16);
   }
 
-  return boundary
-}
+  return boundary;
+};
 
 /**
  * @param {FormData} form
@@ -88,18 +88,18 @@ module.exports.getBoundary = () => {
  */
 module.exports.formDataIterator = function * (form, boundary) {
   for (const [name, value] of form) {
-    yield getHeader(boundary, name, value)
+    yield getHeader(boundary, name, value);
 
     if (isBlob(value)) {
-      yield * value.stream()
+      yield * value.stream();
     } else {
-      yield value
+      yield value;
     }
 
-    yield carriage
+    yield carriage;
   }
 
-  yield getFooter(boundary)
-}
+  yield getFooter(boundary);
+};
 
-module.exports.isBlob = isBlob
+module.exports.isBlob = isBlob;

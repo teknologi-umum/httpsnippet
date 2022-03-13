@@ -1,12 +1,12 @@
-'use strict'
+"use strict";
 
 module.exports = {
   info: {
-    key: 'objc',
-    title: 'Objective-C',
-    extname: '.m',
-    default: 'nsurlsession'
+    key: "objc",
+    title: "Objective-C",
+    extname: ".m",
+    default: "nsurlsession"
   },
 
-  nsurlsession: require('./nsurlsession')
-}
+  nsurlsession: require("./nsurlsession")
+};

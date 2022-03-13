@@ -8,13 +8,13 @@
  * for any questions or issues regarding the generated code snippet, please open an issue mentioning the author.
  */
 
-'use strict'
+"use strict";
 
-const CodeBuilder = require('../../helpers/code-builder').default
+const CodeBuilder = require("../../helpers/code-builder").default;
 
-module.exports = function (source, options) {
+module.exports = function(source, options) {
   // Let's Go!
-  const code = new CodeBuilder('\t')
+  const code = new CodeBuilder("\t");
 
   // Define Options
   const opts = Object.assign({
@@ -22,116 +22,116 @@ module.exports = function (source, options) {
     checkErrors: false,
     printBody: true,
     timeout: -1
-  }, options)
+  }, options);
 
-  const errorPlaceholder = opts.checkErrors ? 'err' : '_'
+  const errorPlaceholder = opts.checkErrors ? "err" : "_";
 
-  const indent = opts.showBoilerplate ? 1 : 0
+  const indent = opts.showBoilerplate ? 1 : 0;
 
-  const errorCheck = function () {
+  const errorCheck = function() {
     if (opts.checkErrors) {
-      code.push(indent, 'if err != nil {')
-        .push(indent + 1, 'panic(err)')
-        .push(indent, '}')
+      code.push(indent, "if err != nil {")
+        .push(indent + 1, "panic(err)")
+        .push(indent, "}");
     }
-  }
+  };
 
   // Create boilerplate
   if (opts.showBoilerplate) {
-    code.push('package main')
+    code.push("package main")
       .blank()
-      .push('import (')
-      .push(indent, '"fmt"')
+      .push("import (")
+      .push(indent, "\"fmt\"");
 
     if (opts.timeout > 0) {
-      code.push(indent, '"time"')
+      code.push(indent, "\"time\"");
     }
 
     if (source.postData.text) {
-      code.push(indent, '"strings"')
+      code.push(indent, "\"strings\"");
     }
 
-    code.push(indent, '"net/http"')
+    code.push(indent, "\"net/http\"");
 
     if (opts.printBody) {
-      code.push(indent, '"io/ioutil"')
+      code.push(indent, "\"io/ioutil\"");
     }
 
-    code.push(')')
+    code.push(")")
       .blank()
-      .push('func main() {')
-      .blank()
+      .push("func main() {")
+      .blank();
   }
 
   // Create client
-  let client
+  let client;
   if (opts.timeout > 0) {
-    client = 'client'
-    code.push(indent, 'client := http.Client{')
-      .push(indent + 1, 'Timeout: time.Duration(%s * time.Second),', opts.timeout)
-      .push(indent, '}')
-      .blank()
+    client = "client";
+    code.push(indent, "client := http.Client{")
+      .push(indent + 1, "Timeout: time.Duration(%s * time.Second),", opts.timeout)
+      .push(indent, "}")
+      .blank();
   } else {
-    client = 'http.DefaultClient'
+    client = "http.DefaultClient";
   }
 
-  code.push(indent, 'url := "%s"', source.fullUrl)
-    .blank()
+  code.push(indent, "url := \"%s\"", source.fullUrl)
+    .blank();
 
   // If we have body content or not create the var and reader or nil
   if (source.postData.text) {
-    code.push(indent, 'payload := strings.NewReader(%s)', JSON.stringify(source.postData.text))
+    code.push(indent, "payload := strings.NewReader(%s)", JSON.stringify(source.postData.text))
       .blank()
-      .push(indent, 'req, %s := http.NewRequest("%s", url, payload)', errorPlaceholder, source.method)
-      .blank()
+      .push(indent, "req, %s := http.NewRequest(\"%s\", url, payload)", errorPlaceholder, source.method)
+      .blank();
   } else {
-    code.push(indent, 'req, %s := http.NewRequest("%s", url, nil)', errorPlaceholder, source.method)
-      .blank()
+    code.push(indent, "req, %s := http.NewRequest(\"%s\", url, nil)", errorPlaceholder, source.method)
+      .blank();
   }
 
-  errorCheck()
+  errorCheck();
 
   // Add headers
   if (Object.keys(source.allHeaders).length) {
-    Object.keys(source.allHeaders).forEach(function (key) {
-      code.push(indent, 'req.Header.Add("%s", "%s")', key, source.allHeaders[key])
-    })
+    Object.keys(source.allHeaders).forEach(function(key) {
+      code.push(indent, "req.Header.Add(\"%s\", \"%s\")", key, source.allHeaders[key]);
+    });
 
-    code.blank()
+    code.blank();
   }
 
   // Make request
-  code.push(indent, 'res, %s := %s.Do(req)', errorPlaceholder, client)
-  errorCheck()
+  code.push(indent, "res, %s := %s.Do(req)", errorPlaceholder, client);
+  errorCheck();
 
   // Get Body
   if (opts.printBody) {
     code.blank()
-      .push(indent, 'defer res.Body.Close()')
-      .push(indent, 'body, %s := ioutil.ReadAll(res.Body)', errorPlaceholder)
-    errorCheck()
+      .push(indent, "defer res.Body.Close()")
+      .push(indent, "body, %s := ioutil.ReadAll(res.Body)", errorPlaceholder);
+    errorCheck();
   }
 
   // Print it
   code.blank()
-    .push(indent, 'fmt.Println(res)')
+    .push(indent, "fmt.Println(res)");
 
   if (opts.printBody) {
-    code.push(indent, 'fmt.Println(string(body))')
+    code.push(indent, "fmt.Println(string(body))");
   }
 
   // End main block
   if (opts.showBoilerplate) {
     code.blank()
-      .push('}')
+      .push("}");
   }
 
-  return code.join()
-}
+  return code.join();
+};
 
 module.exports.info = {
-  key: 'native',
-  title: 'NewRequest',
-  link: 'http://golang.org/pkg/net/http/#NewRequest',
-  description: 'Golang HTTP client request'
-}
+  key: "native",
+  title: "NewRequest",
+  link: "http://golang.org/pkg/net/http/#NewRequest",
+  description: "Golang HTTP client request"
+};

@@ -1,4 +1,4 @@
-import { Header } from "har-format"
+import { Header } from "har-format";
 
 /**
  * Given a headers object retrieve the contents of a header out of it via a case-insensitive key.
@@ -6,12 +6,12 @@ import { Header } from "har-format"
  * @param headers The header
  * @param name The name of the header
  */
-export function getHeader(headers: Header, name: string): string | undefined{
-  const key = Object.keys(headers).find(k => k.toLowerCase() === name.toLowerCase())
+export function getHeader(headers: Header, name: string): string | undefined {
+  const key = Object.keys(headers).find(k => k.toLowerCase() === name.toLowerCase());
   if (key === undefined) {
     return undefined;
   }
-  return headers[key]
+  return headers[key];
 }
 
 /**
@@ -24,9 +24,9 @@ export function getHeaderName(headers: Record<string, string>, name: string) {
   // eslint-disable-next-line array-callback-return
   return Object.keys(headers).find(k => {
     if (k.toLowerCase() === name.toLowerCase()) {
-      return k
+      return k;
     }
-  })
+  });
 }
 
 /**
@@ -36,5 +36,5 @@ export function getHeaderName(headers: Record<string, string>, name: string) {
  * @param name
  */
 export function hasHeader(headers: Record<string, string>, name: string): boolean {
-  return Boolean(Object.keys(headers).find(k => k.toLowerCase() === name.toLowerCase()))
+  return Boolean(Object.keys(headers).find(k => k.toLowerCase() === name.toLowerCase()));
 }

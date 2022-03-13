@@ -1,6 +1,6 @@
-'use strict'
+"use strict";
 
-const util = require('util')
+const util = require("util");
 
 module.exports = {
   /**
@@ -9,8 +9,8 @@ module.exports = {
    * @param {number} length Length of the array to return
    * @return {string}
    */
-  blankString: function (length) {
-    return Array.apply(null, new Array(length)).map(String.prototype.valueOf, ' ').join('')
+  blankString: function(length) {
+    return Array.apply(null, new Array(length)).map(String.prototype.valueOf, " ").join("");
   },
 
   /**
@@ -32,10 +32,10 @@ module.exports = {
    *   // returns:
    *   NSDictionary *params = @{ @"a": @"b", @"c": @"d" };
    */
-  nsDeclaration: function (nsClass, name, parameters, indent) {
-    const opening = nsClass + ' *' + name + ' = '
-    const literal = this.literalRepresentation(parameters, indent ? opening.length : undefined)
-    return opening + literal + ';'
+  nsDeclaration: function(nsClass, name, parameters, indent) {
+    const opening = nsClass + " *" + name + " = ";
+    const literal = this.literalRepresentation(parameters, indent ? opening.length : undefined);
+    return opening + literal + ";";
   },
 
   /**
@@ -44,36 +44,36 @@ module.exports = {
    * @param {*} value Any JavaScript literal
    * @return {string}
    */
-  literalRepresentation: function (value, indentation) {
-    const join = indentation === undefined ? ', ' : ',\n   ' + this.blankString(indentation)
+  literalRepresentation: function(value, indentation) {
+    const join = indentation === undefined ? ", " : ",\n   " + this.blankString(indentation);
 
     switch (Object.prototype.toString.call(value)) {
-      case '[object Number]':
-        return '@' + value
+    case "[object Number]":
+      return "@" + value;
 
-      case '[object Array]': {
-        const valuesRepresentation = value.map(function (v) {
-          return this.literalRepresentation(v)
-        }.bind(this))
-        return '@[ ' + valuesRepresentation.join(join) + ' ]'
+    case "[object Array]": {
+      const valuesRepresentation = value.map(function(v) {
+        return this.literalRepresentation(v);
+      }.bind(this));
+      return "@[ " + valuesRepresentation.join(join) + " ]";
+    }
+
+    case "[object Object]": {
+      const keyValuePairs = [];
+      for (const k in value) {
+        keyValuePairs.push(util.format("@\"%s\": %s", k, this.literalRepresentation(value[k])));
       }
+      return "@{ " + keyValuePairs.join(join) + " }";
+    }
 
-      case '[object Object]': {
-        const keyValuePairs = []
-        for (const k in value) {
-          keyValuePairs.push(util.format('@"%s": %s', k, this.literalRepresentation(value[k])))
-        }
-        return '@{ ' + keyValuePairs.join(join) + ' }'
+    case "[object Boolean]":
+      return value ? "@YES" : "@NO";
+
+    default:
+      if (value === null || value === undefined) {
+        return "";
       }
-
-      case '[object Boolean]':
-        return value ? '@YES' : '@NO'
-
-      default:
-        if (value === null || value === undefined) {
-          return ''
-        }
-        return '@"' + value.toString().replace(/"/g, '\\"') + '"'
+      return "@\"" + value.toString().replace(/"/g, "\\\"") + "\"";
     }
   }
-}
+};

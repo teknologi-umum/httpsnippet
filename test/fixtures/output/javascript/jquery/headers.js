@@ -9,6 +9,6 @@ const settings = {
   }
 };
 
-$.ajax(settings).done(function (response) {
+$.ajax(settings).done(function(response) {
   console.log(response);
 });
