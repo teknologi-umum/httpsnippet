@@ -7,11 +7,8 @@
  *
  * for any questions or issues regarding the generated code snippet, please open an issue mentioning the author.
  */
-
-"use strict";
-
-const CodeBuilder = require("../../helpers/code-builder").default;
-const helpers = require("../../helpers/headers");
+import CodeBuilder from "../../helpers/code-builder";
+import helpers from "../../helpers/headers";
 
 const Keyword = function(name) {
   this.name = name;
@@ -59,33 +56,33 @@ const padBlock = function(x, s) {
 
 const jsToEdn = function(js) {
   switch (jsType(js)) {
-  case "string":
-    return "\"" + js.replace(/"/g, "\\\"") + "\"";
-  case "file":
-    return js.toString();
-  case "keyword":
-    return js.toString();
-  case "null":
-    return "nil";
-  case "regexp":
-    return "#\"" + js.source + "\"";
-  case "object": { // simple vertical format
-    const obj = Object.keys(js)
-      .reduce(function(acc, key) {
-        const val = padBlock(key.length + 2, jsToEdn(js[key]));
-        return acc + ":" + key + " " + val + "\n ";
-      }, "")
-      .trim();
-    return "{" + padBlock(1, obj) + "}";
-  }
-  case "array": { // simple horizontal format
-    const arr = js.reduce(function(acc, val) {
-      return acc + " " + jsToEdn(val);
-    }, "").trim();
-    return "[" + padBlock(1, arr) + "]";
-  }
-  default: // 'number' 'boolean'
-    return js.toString();
+    case "string":
+      return "\"" + js.replace(/"/g, "\\\"") + "\"";
+    case "file":
+      return js.toString();
+    case "keyword":
+      return js.toString();
+    case "null":
+      return "nil";
+    case "regexp":
+      return "#\"" + js.source + "\"";
+    case "object": { // simple vertical format
+      const obj = Object.keys(js)
+        .reduce(function(acc, key) {
+          const val = padBlock(key.length + 2, jsToEdn(js[key]));
+          return acc + ":" + key + " " + val + "\n ";
+        }, "")
+        .trim();
+      return "{" + padBlock(1, obj) + "}";
+    }
+    case "array": { // simple horizontal format
+      const arr = js.reduce(function(acc, val) {
+        return acc + " " + jsToEdn(val);
+      }, "").trim();
+      return "[" + padBlock(1, arr) + "]";
+    }
+    default: // 'number' 'boolean'
+      return js.toString();
   }
 };
 
@@ -103,42 +100,42 @@ module.exports = function(source, options) {
   };
 
   switch (source.postData.mimeType) {
-  case "application/json":
-    params["content-type"] = new Keyword("json");
-    params["form-params"] = source.postData.jsonObj;
-    delete params.headers[helpers.getHeaderName(params.headers, "content-type")];
-    break;
-  case "application/x-www-form-urlencoded":
-    params["form-params"] = source.postData.paramsObj;
-    delete params.headers[helpers.getHeaderName(params.headers, "content-type")];
-    break;
-  case "text/plain":
-    params.body = source.postData.text;
-    delete params.headers[helpers.getHeaderName(params.headers, "content-type")];
-    break;
-  case "multipart/form-data":
-    params.multipart = source.postData.params.map(function(x) {
-      if (x.fileName && !x.value) {
-        return {
-          name: x.name,
-          content: new File(x.fileName)
-        };
-      } else {
-        return {
-          name: x.name,
-          content: x.value
-        };
-      }
-    });
-    delete params.headers[helpers.getHeaderName(params.headers, "content-type")];
-    break;
+    case "application/json":
+      params["content-type"] = new Keyword("json");
+      params["form-params"] = source.postData.jsonObj;
+      delete params.headers[helpers.getHeaderName(params.headers, "content-type")];
+      break;
+    case "application/x-www-form-urlencoded":
+      params["form-params"] = source.postData.paramsObj;
+      delete params.headers[helpers.getHeaderName(params.headers, "content-type")];
+      break;
+    case "text/plain":
+      params.body = source.postData.text;
+      delete params.headers[helpers.getHeaderName(params.headers, "content-type")];
+      break;
+    case "multipart/form-data":
+      params.multipart = source.postData.params.map(function(x) {
+        if (x.fileName && !x.value) {
+          return {
+            name: x.name,
+            content: new File(x.fileName)
+          };
+        } else {
+          return {
+            name: x.name,
+            content: x.value
+          };
+        }
+      });
+      delete params.headers[helpers.getHeaderName(params.headers, "content-type")];
+      break;
   }
 
   switch (helpers.getHeader(params.headers, "accept")) {
-  case "application/json":
-    params.accept = new Keyword("json");
-    delete params.headers[helpers.getHeaderName(params.headers, "accept")];
-    break;
+    case "application/json":
+      params.accept = new Keyword("json");
+      delete params.headers[helpers.getHeaderName(params.headers, "accept")];
+      break;
   }
 
   code.push("(require '[clj-http.client :as client])\n");

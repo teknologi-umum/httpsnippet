@@ -1,5 +1,4 @@
 /* eslint-env browser */
-import debugUtil from "debug";
 import es from "event-stream";
 import qs from "querystring";
 import MultiPartForm from "form-data";
@@ -12,8 +11,6 @@ import { formDataIterator, isBlob } from "./helpers/form-data";
 import type { Request } from "./types/Request";
 import type { PostData } from "./types/PostData";
 import type { Entry, Har } from "har-format";
-
-const debug = debugUtil("httpsnippet");
 
 // constructor
 class HTTPSnippet {
@@ -63,7 +60,7 @@ class HTTPSnippet {
 
     // construct query objects
     if (request.queryString?.length > 0) {
-      debug("queryString found, constructing queryString pair map");
+      // queryString found, constructing queryString pair map
       request.queryObj = request.queryString.reduce(reducer, {});
     }
 
@@ -204,8 +201,6 @@ class HTTPSnippet {
           try {
             request.postData.jsonObj = JSON.parse(request.postData.text);
           } catch (e) {
-            debug(e);
-
             // force back to text/plain
             // if headers have proper content-type value, then this should also work
             request.postData.mimeType = "text/plain"

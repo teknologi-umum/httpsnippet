@@ -1,7 +1,7 @@
 import CodeBuilder from "../../helpers/code-builder";
 
-module.exports = function(source, _options) {
-  const code = new CodeBuilder();
+export default function(source, _options) {
+  const code = new CodeBuilder(" ");
 
   code.push("CURL *hnd = curl_easy_init();")
     .blank()
@@ -38,9 +38,9 @@ module.exports = function(source, _options) {
     .push("CURLcode ret = curl_easy_perform(hnd);");
 
   return code.join();
-};
+}
 
-module.exports.info = {
+export const info = {
   key: "libcurl",
   title: "Libcurl",
   link: "http://curl.haxx.se/libcurl/",

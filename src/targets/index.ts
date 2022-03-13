@@ -1,5 +1,5 @@
-"use strict";
-
+export * from "./c/index"
+export * from "./clojure/index"
 module.exports = {
   c: require("./c"),
   clojure: require("./clojure"),

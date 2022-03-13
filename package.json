@@ -62,6 +62,8 @@
     "url": "https://github.com/teknologi-umum/httpsnippet/issues"
   },
   "scripts": {
+    "lint:fix": "eslint --fix --ignore-path .gitignore --ext .js,.ts .",
+    "lint:check": "eslint --ignore-path .gitignore --ext .js,.ts .",
     "quick": "mocha --no-timeouts --fgrep 'Request Validation' --invert",
     "pretest": "standard && echint",
     "test": "mocha -r ts-node/register --no-timeouts",
@@ -69,21 +71,6 @@
     "coverage": "istanbul cover --dir coverage _mocha -- --fgrep 'Request Validation' --invert -R dot",
     "codeclimate": "codeclimate < coverage/lcov.info",
     "build": "tsc"
-  },
-  "standard": {
-    "env": "mocha",
-    "ignore": [
-      "**/test/fixtures/**",
-      "**/dist/**"
-    ]
-  },
-  "echint": {
-    "ignore": [
-      "coverage/**",
-      "**/node_modules/**",
-      "**/fixtures/**",
-      "**/dist/**"
-    ]
   },
   "devDependencies": {
     "@rollup/plugin-typescript": "^8.3.1",

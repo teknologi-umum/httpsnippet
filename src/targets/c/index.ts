@@ -1,6 +1,6 @@
-"use strict";
+import libcurl from "./libcurl";
 
-module.exports = {
+export default {
   info: {
     key: "c",
     title: "C",
@@ -8,5 +8,5 @@ module.exports = {
     default: "libcurl"
   },
 
-  libcurl: require("./libcurl")
+  libcurl
 };
