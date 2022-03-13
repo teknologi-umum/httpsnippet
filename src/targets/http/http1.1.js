@@ -12,7 +12,7 @@
 'use strict'
 
 const CRLF = '\r\n'
-const CodeBuilder = require('../../helpers/code-builder')
+const CodeBuilder = require('../../helpers/code-builder').default
 const util = require('util')
 
 /**

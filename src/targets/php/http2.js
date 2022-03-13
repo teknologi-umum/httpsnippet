@@ -12,7 +12,7 @@
 
 const helpers = require('./helpers')
 const headerHelpers = require('../../helpers/headers')
-const CodeBuilder = require('../../helpers/code-builder')
+const CodeBuilder = require('../../helpers/code-builder').default
 
 module.exports = function (source, options) {
   const opts = Object.assign({
