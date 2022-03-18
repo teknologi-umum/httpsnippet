@@ -16,7 +16,7 @@ export default {
     {
       file: "dist/index.iife.js",
       format: "iife",
-      name: "flourite",
+      name: "httpsnippet",
       plugins: [terser()]
     }
   ],
